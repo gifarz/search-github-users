@@ -36,7 +36,7 @@ export default function App() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  const fetchUser = async () => {
+  const fetchUser = React.useCallback(async () => {
     setError(null);
     setUserData(null);
     setUserRepo(null);
@@ -58,15 +58,11 @@ export default function App() {
 
       setUserData(data);
 
-      console.log("data getUser", data)
-
       const repoRes = await fetch(`/api/checkUserRepo?username=${username}`);
       if (!repoRes.ok) {
         setIsLoading(false);
         throw new Error("Repositories not found");
       }
-
-      console.log("data repoRes", repoRes)
 
       let repoData: GitHubRepo[] = await repoRes.json();
 
@@ -84,8 +80,6 @@ export default function App() {
         })
       );
 
-      console.log("data repoData", repoData)
-
       setIsLoading(false);
       setUserRepo(repoData);
 
@@ -93,7 +87,7 @@ export default function App() {
       setIsLoading(false);
       setError((err as Error).message);
     }
-  };
+  }, [username]);
 
   const modalDetail = (repo: GitHubRepo) => {
     setIsOpen(true)
