@@ -3,6 +3,22 @@
   --foreground: #171717;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  box-shadow: 0 0 5px #555, 0 0 10px #888;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
