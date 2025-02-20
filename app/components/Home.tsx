@@ -26,12 +26,6 @@ const Home: React.FC<HomeProps> = ({ children }) => {
         <div className={styles.container}>
             <nav className={`${styles.navbar}`}>
                 <h1>GitHub User Search</h1>
-                {/* {
-                    scrolled ?
-                    <hr style={{ borderBottom: "2px solid black", marginTop: "20px" }}></hr>
-                    :
-                    ""
-                } */}
             </nav>
 
             <main className={styles.content}>{children}</main>

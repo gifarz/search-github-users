@@ -1,11 +1,11 @@
 "use client"
 
-import Home from "./components/Home";
 import React from "react";
 import styles from "../styles/Layout.module.css";
 import SearchIcon from "@/public/search.svg";
 import SpotlightCard from "./components/Card";
 import Modal from "./components/Modal";
+import Home from "./components/Home";
 
 interface GitHubUser {
   login: string;
@@ -25,7 +25,7 @@ interface GitHubRepo {
   readme?: string;
 }
 
-export default function App() {
+export default function page() {
 
   const [username, setUsername] = React.useState<string>("");
   const [repoName, setRepoName] = React.useState<string>("");
