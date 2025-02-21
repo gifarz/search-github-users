@@ -207,14 +207,14 @@
 .profile-info a {
     max-width: 110px;
     padding: 8px 12px;
-    background-color: #007bff;
+    background-color: #ff0000;
     color: white;
     text-decoration: none;
     border-radius: 5px;
 }
 
 .profile-info a:hover {
-    background-color: #0056b3;
+    background-color: #b30000;
 }
 /* PROFILE SECTION COMPONENT */
 
@@ -250,7 +250,7 @@
 }
 
 .button-view {
-    background-color: #ff0000;
+    background-color: #c5c200;
     max-width: max-content;
     color: white;
     border: none;
@@ -264,13 +264,11 @@
 
 .button-show:hover {
     background-color: #0056b3;
-    /* Darker blue */
     transform: scale(1.05);
 }
 
 .button-view:hover {
-    background-color: #b30000;
-    /* Darker blue */
+    background-color: #b3b000;
     transform: scale(1.05);
 }
 
