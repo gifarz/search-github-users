@@ -1,5 +1,8 @@
 import React from "react";
 import styles from "@/styles/Layout.module.css";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import { useGithub } from "@/context/GithubContext";
 
 interface ModalProps {
@@ -16,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
     // useGithub function that used global state management and call the state of userGithub and repo
     const { userGithub, repo } = useGithub()
-    
+
     React.useEffect(() => {
         fetchReadMe()
     }, [])
@@ -26,7 +29,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         try {
             const readmeRes = await fetch(`/api/getReadMeRepo?username=${userGithub}&repo=${repo}`);
 
-            if(!readmeRes.ok){
+            if (!readmeRes.ok) {
                 setReadMe("No README available");
             }
 
@@ -34,21 +37,21 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
             const content = decodeBase64Content(response.content)
 
-            if(content == ""){
+            if (content == "") {
                 setReadMe("No README available")
             } else {
                 setReadMe(content)
             }
 
         } catch {
-           setReadMe("No README available");
+            setReadMe("No README available");
         }
     }
 
     // Function for decoding the content of readme in base64
     const decodeBase64Content = (encoded: string): string => {
         try {
-            if(encoded){
+            if (encoded) {
                 return atob(encoded);
             }
             return ""
@@ -57,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             return "";
         }
     };
-    
+
 
     return (
         <div className={styles.overlay} onClick={onClose}>
@@ -66,10 +69,18 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     &times;
                 </button>
                 {repo && <h2 className={styles.title}>{repo}</h2>}
-                <div className={styles["modal-content"]}>
-                    <pre>
-                        {readMe ?? "Loading..."}
-                    </pre>
+                <div className={styles["prose"]}>
+                    {
+                        readMe ?
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeHighlight]}
+                        >
+                            {readMe}
+                        </ReactMarkdown>
+                        :
+                        <p className={styles["text-center"]}>Loading...</p>
+                    }
                 </div>
             </div>
         </div>

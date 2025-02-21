@@ -89,6 +89,7 @@
         transform: rotate(360deg);
     }
 }
+
 /* LOADING COMPONENT */
 
 /* MODAL SECTION COMPONENT */
@@ -107,7 +108,7 @@
 
 /* Modal Box */
 .modal {
-    background: white;
+    background: rgb(0, 0, 0);
     min-height: 50%;
     max-height: 100%;
     min-width: 300px;
@@ -115,7 +116,6 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
     animation: fadeIn 0.3s ease-in-out;
     position: relative;
     overflow-y: auto;
@@ -125,22 +125,30 @@
 .title {
     margin-bottom: 10px;
     font-size: 20px;
-    color: black;
+    color: white;
     font-weight: bold;
+    text-align: center;
 }
 
 /* Modal Content */
 .modal-content {
     margin: 20px 5px;
     font-size: 16px;
-    color: #333;
 }
 
-.modal-content pre {
-    white-space: pre-wrap;  /* Wraps text instead of scrolling horizontally */
-    word-wrap: break-word;   /* Ensures long words wrap properly */
-    overflow-wrap: break-word; /* Alternative for word-wrap */
-    max-width: 100%;         /* Ensures it does not exceed the parent */
+.prose {
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    line-height: 2;
+    margin-bottom: 2rem;
+}
+
+.prose pre {
+    background-color: #1e1e1e;
+    color: #fff;
+    line-height: 3;
+    padding: 0px 10px;
 }
 
 /* Close Button */
@@ -171,6 +179,7 @@
         transform: scale(1);
     }
 }
+
 /* MODAL SECTION COMPONENT */
 
 /* PROFILE SECTION COMPONENT */
@@ -216,6 +225,7 @@
 .profile-info a:hover {
     background-color: #b30000;
 }
+
 /* PROFILE SECTION COMPONENT */
 
 .text-center {
@@ -330,6 +340,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
 /* CARD COMPONENT */
 
 .footer {
@@ -355,11 +366,11 @@
         width: 200px;
         height: 200px;
     }
-    
+
     .profile-info {
         gap: 20px;
     }
-    
+
     .profile-info h2 {
         font-size: 24px;
     }
