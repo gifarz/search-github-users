@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const response = await fetch(`${apiUrl}/repos/${username}/${repo}/readme`, { 
             method: 'GET',
-            headers: { Accept: "application/vnd.github.v3.raw" }
         });
 
         const data = await response.json();

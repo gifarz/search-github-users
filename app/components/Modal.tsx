@@ -1,15 +1,63 @@
 import React from "react";
-import styles from "../../styles/Layout.module.css";
+import styles from "@/styles/Layout.module.css";
+import { useGithub } from "@/context/GithubContext";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
     title?: string;
-    children: React.ReactNode;
+    username?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
-    if (!isOpen) return null; // Don't render when closed
+// Modal function for opening the modal when view readme clicked
+const Modal: React.FC<ModalProps> = ({ onClose }) => {
+
+    const [readMe, setReadMe] = React.useState<string | null>(null)
+
+    // useGithub function that used global state management and call the state of userGithub and repo
+    const { userGithub, repo } = useGithub()
+    
+    React.useEffect(() => {
+        fetchReadMe()
+    }, [])
+
+    // fetchReadMe function for retrieving the readme of repository by github username 
+    const fetchReadMe = async () => {
+        try {
+            const readmeRes = await fetch(`/api/getReadMeRepo?username=${userGithub}&repo=${repo}`);
+
+            if(!readmeRes.ok){
+                setReadMe("No README available");
+            }
+
+            const response = await readmeRes.json()
+
+            const content = decodeBase64Content(response.content)
+
+            if(content == ""){
+                setReadMe("No README available")
+            } else {
+                setReadMe(content)
+            }
+
+        } catch {
+           setReadMe("No README available");
+        }
+    }
+
+    // Function for decoding the content of readme in base64
+    const decodeBase64Content = (encoded: string): string => {
+        try {
+            if(encoded){
+                return atob(encoded);
+            }
+            return ""
+        } catch (error) {
+            console.error("Invalid Base64 string", error);
+            return "";
+        }
+    };
+    
 
     return (
         <div className={styles.overlay} onClick={onClose}>
@@ -17,8 +65,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
                 <button className={styles.closeButton} onClick={onClose}>
                     &times;
                 </button>
-                {title && <h2 className={styles.title}>{title}</h2>}
-                <div className={styles["modal-content"]}>{children}</div>
+                {repo && <h2 className={styles.title}>{repo}</h2>}
+                <div className={styles["modal-content"]}>
+                    <pre>
+                        {readMe ?? "Loading..."}
+                    </pre>
+                </div>
             </div>
         </div>
     );

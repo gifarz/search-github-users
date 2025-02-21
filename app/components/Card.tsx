@@ -1,5 +1,5 @@
 import { useRef, ReactNode } from "react";
-import styles from "../../styles/Layout.module.css";
+import styles from "@/styles/Layout.module.css";
 
 interface HomeProps {
     children?: ReactNode;
@@ -7,6 +7,7 @@ interface HomeProps {
     spotlightColor?: string;
 }
 
+// SpotlightCard function for putting another component on the card. This is property of reactbits.dev
 const SpotlightCard: React.FC<HomeProps> = ({ children, className = "", spotlightColor = "rgba(255, 255, 255, 0.25)" }) => {
     const divRef = useRef<any | null>(null);
 

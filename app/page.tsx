@@ -1,11 +1,12 @@
 "use client"
 
 import React from "react";
-import styles from "../styles/Layout.module.css";
+import styles from "@/styles/Layout.module.css";
 import SearchIcon from "@/public/search.svg";
 import SpotlightCard from "./components/Card";
 import Modal from "./components/Modal";
 import Home from "./components/Home";
+import { useGithub } from "@/context/GithubContext";
 
 interface GitHubUser {
   login: string;
@@ -16,27 +17,30 @@ interface GitHubUser {
   bio?: string;
   html_url: string;
   message?: string;
+  public_repos?: string;
 }
 
 interface GitHubRepo {
   id: number;
   name: string;
   html_url: string;
-  readme?: string;
 }
 
+// This page is the main component that wrapped the components that existed in this repository
 export default function page() {
 
   const [username, setUsername] = React.useState<string>("");
-  const [repoName, setRepoName] = React.useState<string>("");
-  const [repoReadMe, setRepoReadMe] = React.useState<string>("");
   const [userData, setUserData] = React.useState<GitHubUser | null>(null);
   const [userRepo, setUserRepo] = React.useState<GitHubRepo[] | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  const fetchUser = React.useCallback(async () => {
+  // useGithub function that used global state management and call the state of setUserGithub and setRepo for changing the each state
+  const { setUserGithub, setRepo } = useGithub();
+
+  // fetchUser function is fetching data of 2 apis there are /api/getUserGithub and /api/checkUserRepo
+  const fetchUser = async () => {
     setError(null);
     setUserData(null);
     setUserRepo(null);
@@ -53,7 +57,7 @@ export default function page() {
 
       if (data.message) {
         setIsLoading(false);
-        throw new Error(data.message == "Not Found" ? "Github User Does Not Exist" :  data.message);
+        throw new Error(data.message == "Not Found" ? "Github User Does Not Exist" : data.message);
       }
 
       setUserData(data);
@@ -66,20 +70,6 @@ export default function page() {
 
       let repoData: GitHubRepo[] = await repoRes.json();
 
-      repoData = await Promise.all(
-        repoData.map(async (repo) => {
-          try {
-            const readmeRes = await fetch(`/api/getReadMeRepo?username=${username}&repo=${repo.name}`);
-            if (readmeRes.ok) {
-              repo.readme = await readmeRes.text();
-            }
-          } catch {
-            repo.readme = "No README available";
-          }
-          return repo;
-        })
-      );
-
       setIsLoading(false);
       setUserRepo(repoData);
 
@@ -87,19 +77,23 @@ export default function page() {
       setIsLoading(false);
       setError((err as Error).message);
     }
-  }, [username]);
+  };
 
-  const modalDetail = (repo: GitHubRepo) => {
+  //openModal function for opening the modal when click the view readme button
+  const openModal = (repo: GitHubRepo) => {
     setIsOpen(true)
-    setRepoName(repo.name)
-    setRepoReadMe(repo.readme || "No README available")
+    setRepo(repo.name)
+    setUserGithub(username)
   }
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={repoName}>
-        <p>{repoReadMe}</p>
-      </Modal>
+      {
+        isOpen ?
+          <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        :
+        null
+      }
 
       <Home>
         <div className={styles["search-container"]}>
@@ -162,24 +156,29 @@ export default function page() {
 
               {userRepo && userRepo.length > 0 && (
                 <div>
-                  <h3 className={styles["text-center"]} style={{ margin: "50px 0" }}>List of Repositories</h3>
+                  <h2 className={styles["text-center"]} style={{ margin: "50px 0" }}>
+                    Total Repository : {userData?.public_repos}
+                  </h2>
                   <div className={styles["grid-container"]}>
                     {userRepo.map((repo) => (
                       <SpotlightCard key={repo.id} spotlightColor="rgba(0, 26, 255, 0.2)">
                         <div className={styles["card-content"]}>
-                          <a
-                            href={repo.html_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Project Name : {repo.name}
-                          </a>
-
-                          <p className={styles["limit-text"]}>
-                            ReadMe : {repo.readme || "No README available"}
-                          </p>
-
-                          <button className={styles.button} onClick={() => modalDetail(repo)}>View ReadMe</button>
+                          <h3>Project Name : {repo.name}</h3>
+                          <div className={styles["card-button"]}>
+                            <a
+                              href={repo.html_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={styles["button-show"]}
+                            >
+                              Show Repo
+                            </a>
+                            <button
+                              className={styles["button-view"]}
+                              onClick={() => openModal(repo)}>
+                              View ReadMe
+                            </button>
+                          </div>
                         </div>
                       </SpotlightCard>
                     ))}

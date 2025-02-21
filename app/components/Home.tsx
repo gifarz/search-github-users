@@ -1,26 +1,13 @@
 import React from "react";
 import { ReactNode } from "react";
-import styles from "../../styles/Layout.module.css";
+import styles from "@/styles/Layout.module.css";
 
 interface HomeProps {
     children?: ReactNode;
 }
 
+// Home function for wrapping the component of navbar, content and footer
 const Home: React.FC<HomeProps> = ({ children }) => {
-    const [scrolled, setScrolled] = React.useState<boolean>(false);
-
-    React.useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 0.1) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     return (
         <div className={styles.container}>

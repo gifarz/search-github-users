@@ -12,7 +12,7 @@
     width: 100%;
     padding: 15px 20px;
     text-align: center;
-    z-index: 1000;
+    z-index: 10;
     transition: background 0.3s ease-in-out;
 }
 
@@ -89,7 +89,6 @@
         transform: rotate(360deg);
     }
 }
-
 /* LOADING COMPONENT */
 
 /* MODAL SECTION COMPONENT */
@@ -110,9 +109,9 @@
 .modal {
     background: white;
     min-height: 50%;
-    max-height: 80%;
+    max-height: 100%;
     min-width: 300px;
-    max-width: 600px;
+    max-width: 100%;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -135,7 +134,13 @@
     margin: 20px 5px;
     font-size: 16px;
     color: #333;
-    max-width: 600px;
+}
+
+.modal-content pre {
+    white-space: pre-wrap;  /* Wraps text instead of scrolling horizontally */
+    word-wrap: break-word;   /* Ensures long words wrap properly */
+    overflow-wrap: break-word; /* Alternative for word-wrap */
+    max-width: 100%;         /* Ensures it does not exceed the parent */
 }
 
 /* Close Button */
@@ -166,7 +171,6 @@
         transform: scale(1);
     }
 }
-
 /* MODAL SECTION COMPONENT */
 
 /* PROFILE SECTION COMPONENT */
@@ -175,15 +179,14 @@
     align-items: center;
     gap: 20px;
     max-width: 600px;
-    margin: auto;
     padding: 20px;
     border-radius: 10px;
 }
 
 .profile-container img {
     flex-shrink: 0;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -192,13 +195,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
+    gap: 10px;
     flex: 1;
 }
 
 .profile-info h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .profile-info a {
@@ -233,7 +236,7 @@
     flex: 1;
 }
 
-.button {
+.button-show {
     background-color: #007bff;
     max-width: max-content;
     color: white;
@@ -246,8 +249,27 @@
     transition: background 0.3s, transform 0.2s;
 }
 
-.button:hover {
+.button-view {
+    background-color: #ff0000;
+    max-width: max-content;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.button-show:hover {
     background-color: #0056b3;
+    /* Darker blue */
+    transform: scale(1.05);
+}
+
+.button-view:hover {
+    background-color: #b30000;
     /* Darker blue */
     transform: scale(1.05);
 }
@@ -299,13 +321,17 @@
     gap: 25px;
 }
 
+.card-button {
+    display: flex;
+    gap: 10px;
+}
+
 .limit-text {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-
 /* CARD COMPONENT */
 
 .footer {
@@ -321,6 +347,23 @@
 
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .profile-container {
+        margin: auto;
+    }
+
+    .profile-container img {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .profile-info {
+        gap: 20px;
+    }
+    
+    .profile-info h2 {
+        font-size: 24px;
     }
 }
 
